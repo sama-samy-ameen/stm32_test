@@ -1,7 +1,14 @@
-Debug/
+
 Release/
-.\settings/
 .settings/
 *.o
-*.elf
+*.map
+Debug/*
+!Debug/usb_led.elf EOF
+car > .gitignore << 'EOF'
+Debug/*
+!Debug/usb_led.elf
+Release/
+.settings/
+*.o
 *.map
