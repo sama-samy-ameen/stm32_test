@@ -71,15 +71,15 @@ void usb_rx_handler(uint8_t *buf, uint32_t len)
   }
 }
 
-static int parse9(const char *s, int v[9])
+static int parse8(const char *s, int v[8])
 {
   char *p = (char *)s, *end;
-  for (int i = 0; i < 9; i++) {
+  for (int i = 0; i < 8; i++) {
     long x = strtol(p, &end, 10);
     if (end == p || x < -200 || x > 200) return 0;
     v[i] = (int)x;
     p = end;
-    if (i < 8) { if (*p != ',') return 0; p++; }
+    if (i < 7) { if (*p != ',') return 0; p++; }
   }
   return 1;
 }
@@ -124,11 +124,11 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {if (line_ready) {
-      int v[9];
+      int v[8];
       char out[96];
-      if (parse9(line_buf, v)) {
-        int n = snprintf(out, sizeof(out), "%d,%d,%d,%d,%d,%d,%d,%d,%d\r\n",
-                         v[0],v[1],v[2],v[3],v[4],v[5],v[6],v[7],v[8]);
+      if (parse8(line_buf, v)) {
+        int n = snprintf(out, sizeof(out), "%d,%d,%d,%d,%d,%d,%d,%d\r\n",
+                         v[0],v[1],v[2],v[3],v[4],v[5],v[6],v[7]);
         HAL_UART_Transmit(&huart1, (uint8_t*)out, n, 100);
         CDC_Transmit_FS((uint8_t*)out, n);
       } else {
